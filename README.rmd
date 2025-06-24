@@ -17,6 +17,8 @@ Build a responsive and scalable eCommerce platform where customers can:
 - Register and log in to manage their orders 
 - Place orders and pay with a credit card (Stripe)
 - View order history
+- track oder 
+-live chat 
 
 **Admins** will be able to:
 
