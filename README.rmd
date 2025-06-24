@@ -1,381 +1,251 @@
-# 🛒 Fullstack eCommerce Application
+# 🍏 Fullstack eCommerce Application
 
-This project is a full-featured **eCommerce web application** built using a modern fullstack architecture. It will allow users to browse products, manage a shopping cart, register/login, place orders, and make payments online. It also includes admin functionality for product and order management.
+This project is a full-featured **eCommerce web application** built using a modern fullstack architecture. It allows both guests and registered users to browse and purchase products. Registered users get additional benefits like order history, tracking, and wallet access. Admins can manage products and orders.
 
 ---
 
-
 ## 🚀 Project Overview
 
-**Goal:**  
-Build a responsive and scalable eCommerce platform where customers can:
+**Goal:**
+Build a responsive and scalable eCommerce platform where:
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+### 🧑‍💻 Guests (No login required) can:
 
-- Browse a product catalog
-- Add/remove products from their cart
-- Register and log in to manage their orders 
-- Place orders and pay with a credit card (Stripe)
-- View order history
-- track oder 
--live chat 
+* Browse all products
+* View product details
+* Select size, inseam, quantity
+* Add products to cart
+* Checkout by providing address and payment info
+* Receive downloadable invoice
+* Use automatic chatbot or AI chat for help
 
-**Admins** will be able to:
+### 👤 Registered Users can:
 
-- Manage products (CRUD)
-- View/manage user orders
+* All guest capabilities
+* Create an account and log in
+* Access order history and invoice downloads
+* Track order status
+* Save shipping addresses
+* Use wallet for deposits and payment
+* Use AI-powered customer support chat
+
+### 🛠 Admins can:
+
+* Manage products (CRUD)
+* View and manage user orders
+* Update order statuses
+* Access dashboard and metrics
 
 ---
 
 ## 🧱 Technology Stack
 
 ### 🖥️ Frontend
-You can choose one of the following frameworks:
-- **React.js** (Vite + React Router)
-- **OR Next.js** (App Router or Pages Router)
 
-Additional Tools & Libraries:
-- `Axios` for HTTP requests
-- `React Router DOM` (if using React)
-- `Tailwind CSS` or `CSS Modules` for styling
-- `Context API` or `Redux` for global state (cart/auth)
+* **React.js** (Vite + React Router)
+* `Axios` for HTTP requests
+* `React Router DOM` for routing
+* `Tailwind CSS` or `CSS Modules` for styling
+* `Context API` or `Redux` for global state (cart/auth/chat)
 
 ### 🌐 Backend
-- **Node.js** with **Express.js** for REST API
-- **Sequelize ORM** to connect to PostgreSQL
-- **PostgreSQL** as the database
-- **JWT** for user authentication and route protection
-- **bcryptjs** for password hashing
-- **Stripe** for credit card payments
-- `dotenv`, `cors`, and other middleware
+
+* **Node.js** with **Express.js** for REST API
+* **Sequelize ORM** to connect to PostgreSQL
+* **PostgreSQL** as the database
+* **JWT** for authentication
+* **bcryptjs** for password hashing
+* **Stripe** for payments
+* `dotenv`, `cors`, and middleware
 
 ---
 
 ## 🗂️ Project Structure
 
+```
 ecommerce-app/
-├── client/ # Frontend (React or Next.js)
-├── server/ # Backend (Node + Express + Sequelize + PostgreSQL)
-└── README.md # Project overview and setup guide
-
+├── client/   # Frontend (React)
+├── server/   # Backend (Node + Express + Sequelize + PostgreSQL)
+└── README.md # Project overview
+```
 
 ---
 
 ## ✨ Features
 
-### 👤 User Features
-- Register & login securely with JWT
-- View all products
-- View product details
-- Add/remove products in cart
-- Checkout and pay using Stripe
-- View their order history
+### 👤 User & Guest Features
 
-### 🛠 Admin Features
-- Admin login (isAdmin flag)
-- Create, edit, delete products
-- View all customer orders
+#### ✅ Guests (No login required)
+
+* Browse all jeans
+* View products by category
+* View product detail (size, inseam, description)
+* Add items to cart
+* Checkout with address and Stripe payment
+* Receive downloadable invoice
+* Chat with Auto Chatbot or AI Chat
+
+#### ✅ Registered Users (after login)
+
+* All guest features
+* Register/login with JWT
+* View and update profile
+* View order history with invoices
+* Track order status
+* Manage shipping addresses
+* View wallet and deposit funds
+* Chat support (AI-powered or live)
 
 ---
 
-## 📦 Key Modules
+## ✅ Backend Features
 
-### Authentication
-- Secure registration & login with password hashing
-- JWT token for route protection
-- Role-based access (user vs admin)
+### 👤 Authentication & User Management
 
-### Product Management
-- Product model: name, description, price, image, stock, category
-- Admins can add/edit/delete products
-- Public API to fetch and display products
+* Register/login securely
+* JWT token middleware
+* `GET /api/users/me`, `PUT /api/users/update`
+* Optional delete account
 
-### Cart & Orders
-- Add/remove/update cart items (frontend-managed)
-- Order model stores product list, total, and status
-- User order history and admin order dashboard
+### 📦 Products & Cart
 
-### Payments
-- Integration with **Stripe**
-- Stripe Checkout or card input form
-- Payment success/failure handling
+* `GET /api/products` – View all jeans
+* `GET /api/products/:id` – Product details
+* `GET /api/products/category/:type`
+* `POST /api/cart` – Add to cart
+* `GET /api/cart`, `PUT /api/cart/item/:id`, `DELETE /api/cart/item/:id`
+
+### 🧾 Orders
+
+* `POST /api/orders` – Place order (guest or user)
+* `GET /api/orders/my` – View order history (user only)
+* `GET /api/orders/:id` – View specific order
+* Invoice generation (PDF/Downloadable)
+
+### 🏠 Addresses
+
+* CRUD routes for user addresses
+
+### 💳 Wallet (user only)
+
+* View balance, deposit funds, use on checkout
+
+### 💬 Chat Support
+
+* **Auto Chatbot** for all visitors
+* **AI Chat** (e.g., GPT-based) for advanced support
+* Routes:
+
+  * `GET /api/chat/auto`
+  * `POST /api/chat/ai`
+
+### 💳 Stripe
+
+* Stripe checkout integration
+* Webhook support (optional)
+
+### 🧠 Admin Features
+
+* Admin login with `isAdmin` flag
+* Product management (CRUD)
+* View all orders
+* Update order status
+
+---
+
+## 👖 Product Model
+
+```js
+name: DataTypes.STRING,
+description: DataTypes.TEXT,
+details: DataTypes.TEXT,
+price: DataTypes.FLOAT,
+category: DataTypes.STRING,
+availableSizes: DataTypes.ARRAY(DataTypes.STRING),
+availableInseams: DataTypes.ARRAY(DataTypes.STRING),
+images: DataTypes.ARRAY(DataTypes.STRING)
+```
+
+## 🛒 Cart & CartItem Model
+
+```js
+// Cart
+userId: DataTypes.INTEGER,
+totalPrice: DataTypes.FLOAT
+
+// CartItem
+cartId: DataTypes.INTEGER,
+productId: DataTypes.INTEGER,
+size: DataTypes.STRING,
+inseam: DataTypes.STRING,
+quantity: DataTypes.INTEGER,
+unitPrice: DataTypes.FLOAT,
+subtotal: DataTypes.FLOAT
+```
+
+---
+
+## 📄 Static Pages
+
+* `/men` – Show all jeans
+* `/story`, `/policies`, `/careers`
+
+## 🛠 Admin Panel Pages (React)
+
+* `/admin/dashboard`
+* `/admin/products`, `/admin/orders`, etc.
+
+## 🧭 Client Pages
+
+| Route            | Component         | Description                  |
+| ---------------- | ----------------- | ---------------------------- |
+| `/`              | Home.jsx          | Landing page                 |
+| `/products`      | Products.jsx      | Product list                 |
+| `/products/:id`  | ProductDetail.jsx | Product detail + add to cart |
+| `/cart`          | Cart.jsx          | View/update cart             |
+| `/checkout`      | Checkout.jsx      | Address/payment              |
+| `/login`         | Login.jsx         | Login form                   |
+| `/register`      | Register.jsx      | Register form                |
+| `/orders`        | OrderHistory.jsx  | View past orders (users)     |
+| `/order-success` | OrderSuccess.jsx  | Payment confirmation         |
+| `/profile`       | Profile.jsx       | Profile page                 |
+| `/wallet`        | Wallet.jsx        | Wallet info                  |
+| `/chat`          | Chat.jsx          | Auto & AI chat support       |
 
 ---
 
 ## 🌐 Deployment Plan
 
-- **Frontend**: Deploy to Vercel or Netlify (React/Next.js)
-- **Backend**: Deploy to Render, Railway, or VPS (Node.js)
-- **Database**: Hosted PostgreSQL on Railway, Supabase, or ElephantSQL
+* Frontend: Vercel / Netlify
+* Backend: Render / Railway / VPS
+* DB: Supabase, Railway, ElephantSQL
 
 ---
 
 ## ✅ Prerequisites
 
-To build and run this project, you need:
-
-- Node.js (v18+)
-- PostgreSQL (locally or cloud-hosted)
-- Stripe account for API keys
-- Git + GitHub
-- Basic knowledge of JavaScript, React or Next.js, Express, and SQL
+* Node.js v18+
+* PostgreSQL
+* Stripe API Keys
+* GitHub
 
 ---
 
-## 🔧 Setup & Development Plan
+## 📦 Summary of Backend Packages
 
-This project will be developed step by step:
-
-1. **Initialize backend**: set up Express, Sequelize, PostgreSQL, models & routes
-2. **Set up frontend**: React or Next.js with routing and global state
-3. **Build auth system**: JWT login/register, secure routes
-4. **Build product pages**: product list, detail, filters
-5. **Implement cart logic**: add/remove/update quantities
-6. **Create order system**: backend order routes and order history
-7. **Integrate Stripe**: payment form or redirect, payment status
-8. **Build admin panel**: product and order management
-9. **Polish & deploy**
-
----
-
-## 🙌 Author
-
-This project is built and maintained by a fullstack developer focused on creating real-world applications with modern web technologies.
-
-Feel free to clone, contribute, and customize it for your own eCommerce business or learning project.
+| Package      | Purpose                     |
+| ------------ | --------------------------- |
+| express      | Web framework               |
+| sequelize    | ORM for PostgreSQL          |
+| pg           | PostgreSQL driver           |
+| pg-hstore    | Sequelize dependency        |
+| cors         | Enable CORS                 |
+| dotenv       | Load env variables          |
+| bcryptjs     | Hash passwords              |
+| jsonwebtoken | Auth with JWT               |
+| stripe       | Payment integration         |
+| nodemon      | Auto restart in development |
 
 ---
-server/
-├── config/
-│   └── config.js              # Sequelize DB config (uses .env)
-│   └── database.js            # Sequelize connection instance
-│
-├── controllers/
-│   └── auth.controller.js     # Register, login, get current user
-│   └── product.controller.js  # CRUD for products
-│   └── order.controller.js    # Create/get orders
-│   └── payment.controller.js  # Stripe payment logic
-│
-├── middleware/
-│   └── auth.middleware.js     # JWT authentication middleware
-│   └── isAdmin.middleware.js  # Middleware to check admin access
-│
-├── models/
-│   └── index.js               # Sequelize init and associations
-│   └── user.model.js
-│   └── product.model.js
-│   └── order.model.js
-│
-├── routes/
-│   └── auth.routes.js
-│   └── product.routes.js
-│   └── order.routes.js
-│   └── payment.routes.js
-│
-├── utils/
-│   └── generateToken.js       # Helper to generate JWT
-│
-├── .env                       # Environment variables
-├── server.js                  # Entry point: sets up Express app
-└── package.json
-
-
- Key Responsibilities
-config/ – Handles database setup and connection.
-
-controllers/ – Contains the business logic for each route.
-
-routes/ – Defines all API endpoints and connects them to controllers.
-
-middleware/ – Auth and role checks for protected routes.
-
-models/ – Sequelize models representing database tables.
-
-utils/ – Helper functions like JWT generation.
-
-server.js – Initializes the Express app, middleware, and routes.
-
-npm init -y
-npm install express sequelize pg pg-hstore cors dotenv bcryptjs jsonwebtoken stripe
-
-npm install --save-dev nodemon
-
-"scripts": {
-  "dev": "nodemon server.js"
-}
-
-# 🛒 Fullstack eCommerce App with Custom Admin Dashboard
-
-This project is a full-featured eCommerce platform built using:
-
-- **Frontend**: React.js
-- **Backend**: Node.js with Express.js
-- **Database**: PostgreSQL (via Sequelize ORM)
-- **Authentication**: JWT
-- **Payments**: Stripe
-- **Admin Panel**: Custom-built in React
-
----
-
-## 📦 Summary of Packages
-
-| Package       | Purpose                                 |
-|---------------|------------------------------------------|
-| `express`     | Web framework for building APIs          |
-| `sequelize`   | ORM for PostgreSQL                      |
-| `pg`          | PostgreSQL driver for Node              |
-| `pg-hstore`   | Required by Sequelize for PostgreSQL    |
-| `cors`        | Handles cross-origin requests           |
-| `dotenv`      | Loads environment variables             |
-| `bcryptjs`    | Password hashing                        |
-| `jsonwebtoken`| Token-based authentication (JWT)        |
-| `stripe`      | Stripe payment API integration          |
-| `nodemon`     | Automatically restarts server on changes|
-
----
-
-Let me know if you'd like to include the frontend package summary too (React, Axios, React Router, etc.), or if you want this included in your full project `README.md`.
-
-
-client/
-├── src/
-│   ├── components/
-│   │   ├── admin/
-│   │   │   ├── AdminSidebar.jsx
-│   │   │   ├── AdminHeader.jsx
-│   ├── pages/
-│   │   ├── admin/
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── Products.jsx
-│   │   │   ├── AddProduct.jsx
-│   │   │   ├── EditProduct.jsx
-│   │   │   ├── Orders.jsx
-│   │   │   ├── OrderDetails.jsx
-│   ├── routes/
-│   │   └── AdminRoute.jsx
-│   ├── context/
-│   │   └── AuthContext.jsx
-│   ├── App.jsx
-│   └── main.jsx
-
-
-client/
-├── public/
-│   └── favicon.ico
-│   └── index.html
-│
-├── src/
-│
-│   ├── assets/                # Static images, logos, etc.
-│   │   └── logo.png
-│
-│   ├── components/            # Reusable UI components
-│   │   ├── layout/            # Navbar, Footer, etc.
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   └── Sidebar.jsx
-│   │   ├── product/           # Product cards and grids
-│   │   │   ├── ProductCard.jsx
-│   │   │   └── ProductList.jsx
-│   │   ├── cart/              # Cart-related components
-│   │   │   ├── CartItem.jsx
-│   │   │   └── CartSummary.jsx
-│   │   └── ui/                # Buttons, loaders, alerts
-│   │       ├── Button.jsx
-│   │       └── Spinner.jsx
-│
-│   ├── context/               # React Context providers
-│   │   ├── AuthContext.jsx
-│   │   └── CartContext.jsx
-│
-│   ├── hooks/                 # Custom reusable hooks
-│   │   ├── useAuth.js
-│   │   └── useCart.js
-│
-│   ├── pages/                 # Page components for routes
-│   │   ├── Home.jsx
-│   │   ├── Products.jsx
-│   │   ├── ProductDetail.jsx
-│   │   ├── Cart.jsx
-│   │   ├── Checkout.jsx
-│   │   ├── OrderHistory.jsx
-│   │   ├── OrderSuccess.jsx
-│   │   ├── Login.jsx
-│   │   └── Register.jsx
-│
-│   ├── routes/                # Routing helpers
-│   │   ├── AppRoutes.jsx      # Main route config
-│   │   ├── ProtectedRoute.jsx # For private pages (auth)
-│   │   └── AdminRoute.jsx     # Optional: Admin protection
-│
-│   ├── services/              # Axios and API utilities
-│   │   ├── api.js             # Axios base config
-│   │   ├── authService.js
-│   │   ├── productService.js
-│   │   └── orderService.js
-│
-│   ├── styles/                # Global or modular styles
-│   │   └── main.css
-│
-│   ├── App.jsx                # Root component
-│   ├── main.jsx               # Entry point for ReactDOM
-│   └── index.css              # Global styles (optional)
-│
-├── .env
-├── vite.config.js
-├── package.json
-└── README.md
-
-
----
-
-## 🧭 Main Pages & Routes
-
-| Route               | Page Component       | Description                                       |
-|---------------------|----------------------|---------------------------------------------------|
-| `/`                 | `Home.jsx`           | Landing page with featured products               |
-| `/products`         | `Products.jsx`       | All products with optional category filter        |
-| `/products/:id`     | `ProductDetail.jsx`  | View one product with add-to-cart option          |
-| `/cart`             | `Cart.jsx`           | See and update items in the cart                  |
-| `/checkout`         | `Checkout.jsx`       | Address, payment, and order summary               |
-| `/login`            | `Login.jsx`          | Login form                                        |
-| `/register`         | `Register.jsx`       | Registration form                                 |
-| `/orders`           | `OrderHistory.jsx`   | View past orders                                  |
-| `/order-success`    | `OrderSuccess.jsx`   | Confirmation after successful payment             |
-
----
-
-## 🔐 Authentication (Frontend)
-
-- Use JWT tokens received from backend
-- Store token in `localStorage`
-- `AuthContext` to track login status and user info
-- `ProtectedRoute` to guard `/orders`, `/checkout`
-
----
-
-## 🛒 Cart Management
-
-- Use `CartContext` (or Zustand/Redux) to store cart globally
-- Persist cart in `localStorage`
-- Components: `CartItem.jsx`, `CartSummary.jsx`
-- Automatically calculate subtotal/total/taxes
-
----
-
-## 💳 Stripe Payment Integration
-
-- Use `@stripe/stripe-js` and `@stripe/react-stripe-js`
-- Collect credit card info securely
-- Handle success & error cases
-- Confirm order and redirect to `/order-success`
-
----
-
-## 🌍 Environment Variables (`.env`)
-
-
-
-
 
 
