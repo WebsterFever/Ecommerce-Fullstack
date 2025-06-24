@@ -249,3 +249,142 @@ subtotal: DataTypes.FLOAT
 ---
 
 
+client/
+├── public/
+│   └── index.html
+│
+├── src/
+│   ├── assets/                # Static files (images, logos)
+│   │   └── logo.png
+│
+│   ├── components/            # Reusable components
+│   │   ├── layout/            # Navbar, Footer, Sidebar
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── Sidebar.jsx
+│   │   ├── product/           # Product UI
+│   │   │   ├── ProductCard.jsx
+│   │   │   └── ProductList.jsx
+│   │   ├── cart/              # Cart UI
+│   │   │   ├── CartItem.jsx
+│   │   │   └── CartSummary.jsx
+│   │   ├── ui/                # Buttons, loaders, alerts
+│   │   │   ├── Button.jsx
+│   │   │   └── Spinner.jsx
+│   │   ├── chat/              # AI + Bot chat widgets
+│   │   │   ├── ChatBot.jsx
+│   │   │   └── ChatWidget.jsx
+│
+│   ├── context/               # Global state (Auth, Cart, Chat)
+│   │   ├── AuthContext.jsx
+│   │   ├── CartContext.jsx
+│   │   └── ChatContext.jsx
+│
+│   ├── hooks/                 # Custom hooks
+│   │   ├── useAuth.js
+│   │   ├── useCart.js
+│   │   └── useChat.js
+│
+│   ├── pages/                 # Page-level components
+│   │   ├── Home.jsx
+│   │   ├── Products.jsx
+│   │   ├── ProductDetail.jsx
+│   │   ├── Cart.jsx
+│   │   ├── Checkout.jsx
+│   │   ├── OrderSuccess.jsx
+│   │   ├── OrderHistory.jsx
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── Profile.jsx
+│   │   ├── Wallet.jsx
+│   │   ├── Addresses.jsx
+│   │   ├── Story.jsx
+│   │   ├── Policies.jsx
+│   │   ├── Careers.jsx
+│   │   └── Chat.jsx
+│
+│   ├── admin/                 # Admin Panel pages
+│   │   ├── Dashboard.jsx
+│   │   ├── Products.jsx
+│   │   ├── AddProduct.jsx
+│   │   ├── EditProduct.jsx
+│   │   ├── Orders.jsx
+│   │   └── OrderDetails.jsx
+│
+│   ├── routes/                # Routing setup and guards
+│   │   ├── AppRoutes.jsx
+│   │   ├── ProtectedRoute.jsx
+│   │   └── AdminRoute.jsx
+│
+│   ├── services/              # API calls (Axios)
+│   │   ├── api.js
+│   │   ├── authService.js
+│   │   ├── productService.js
+│   │   ├── orderService.js
+│   │   ├── chatService.js
+│   │   └── walletService.js
+│
+│   ├── styles/                # CSS Modules or Tailwind entry
+│   │   └── main.css
+│
+│   ├── App.jsx                # App root component
+│   ├── main.jsx               # Entry point (Vite)
+│   └── index.css              # Global CSS (optional)
+│
+├── .env
+├── vite.config.js
+└── package.json
+
+
+server/
+├── config/
+│   ├── config.js              # Sequelize config
+│   └── database.js            # DB connection setup
+│
+├── controllers/
+│   ├── auth.controller.js
+│   ├── product.controller.js
+│   ├── order.controller.js
+│   ├── payment.controller.js
+│   ├── user.controller.js
+│   ├── address.controller.js
+│   ├── wallet.controller.js
+│   └── chat.controller.js     # Bot/AI chat endpoints
+│
+├── middleware/
+│   ├── auth.middleware.js     # JWT verification
+│   └── isAdmin.middleware.js  # Admin route protection
+│
+├── models/
+│   ├── index.js
+│   ├── user.model.js
+│   ├── product.model.js
+│   ├── order.model.js
+│   ├── cart.model.js
+│   ├── cartItem.model.js
+│   ├── address.model.js
+│   ├── wallet.model.js
+│   ├── job.model.js           # Optional (careers)
+│   └── page.model.js          # Static CMS pages (story, policies)
+│
+├── routes/
+│   ├── auth.routes.js
+│   ├── product.routes.js
+│   ├── order.routes.js
+│   ├── cart.routes.js
+│   ├── payment.routes.js
+│   ├── user.routes.js
+│   ├── address.routes.js
+│   ├── wallet.routes.js
+│   ├── chat.routes.js
+│   ├── jobs.routes.js
+│   └── pages.routes.js
+│
+├── utils/
+│   ├── generateToken.js       # JWT token generation
+│   └── invoiceGenerator.js    # PDF invoice creation
+│
+├── .env
+├── server.js                  # App entry point
+├── package.json
+└── README.md
