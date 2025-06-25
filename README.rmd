@@ -388,3 +388,51 @@ server/
 ├── server.js                  # App entry point
 ├── package.json
 └── README.md
+
+
+# 🛠️ Backend Setup – Node.js + Express + Sequelize + PostgreSQL
+
+This backend is part of a fullstack eCommerce project built using:
+
+- **Express.js** for RESTful API
+- **PostgreSQL** with **Sequelize** (manual models, no CLI)
+- **JWT authentication**, **Stripe payments**, and full CRUD
+- A clean, modular structure
+
+---
+
+## ✅ 1. Initialize the Backend Project
+
+```bash
+mkdir server && cd server
+npm init -y
+
+npm install express sequelize pg pg-hstore cors dotenv bcryptjs jsonwebtoken stripe
+
+## 📦 Backend Package Summary
+
+| Package        | Purpose                                         |
+|----------------|-------------------------------------------------|
+| `express`      | Web framework                                   |
+| `sequelize`    | ORM for PostgreSQL                              |
+| `pg`           | PostgreSQL driver                               |
+| `pg-hstore`    | Required by Sequelize to work with PostgreSQL   |
+| `cors`         | Handle cross-origin HTTP requests               |
+| `dotenv`       | Load environment variables from `.env` file     |
+| `bcryptjs`     | Secure password hashing                         |
+| `jsonwebtoken` | Token-based authentication using JWT            |
+| `stripe`       | Integration for credit card payments            |
+
+npm install --save-dev nodemon
+
+"scripts": {
+  "dev": "nodemon server.js"
+}
+
+PORT=5432
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_NAME=ecommerce_db
+DB_HOST=localhost
+JWT_SECRET=supersecretkey
+STRIPE_SECRET_KEY=sk_test_XXXXXX
