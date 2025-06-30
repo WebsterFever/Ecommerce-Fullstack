@@ -4,7 +4,8 @@ const dotenv = require('dotenv');
 const sequelize = require('./config/database');
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
-const adminRoutes = require('./routes/admin.routes'); // ✅ NEW
+const adminRoutes = require('./routes/admin.routes'); 
+const productRoutes = require('./routes/product.routes');
 
 dotenv.config();
 
@@ -20,10 +21,10 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/admin', adminRoutes); 
-
+app.use('/', authRoutes);
+app.use('/', userRoutes);
+app.use('/admin', adminRoutes); 
+app.use('/products', productRoutes);
 // Start server and connect to DB
 const PORT = process.env.PORT || 3001;
 

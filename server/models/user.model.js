@@ -1,8 +1,8 @@
 
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const postgres = require('../config/database');
 
-const User = sequelize.define('User', {
+const User = postgres.define('User', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
