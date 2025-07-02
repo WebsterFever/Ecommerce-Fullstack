@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.css';
 const Home = () => {
   return (
     <div>
-      <Header /> {/* ✅ Include the Header at the top */}
+      <Header /> 
 
       <div className={styles.container}>
         <h1>Welcome to The Jean Maker</h1>

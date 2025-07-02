@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/actions/authActions';
@@ -8,30 +7,46 @@ import foto from '../assets/foto.jpg';
 
 const Header = () => {
   const reduxUser = useSelector((state) => state.auth?.user);
-  const [user, setUser] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
 
+  const [user, setUser] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null); // ✅ Used to detect outside clicks
+
+  // ✅ Close dropdown when clicking outside
   useEffect(() => {
-    try {
-      if (reduxUser) {
-        setUser(reduxUser);
-      } else {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Sync user from Redux or localStorage
+  useEffect(() => {
+    if (reduxUser) {
+      setUser(reduxUser);
+    } else {
+      try {
         const stored = localStorage.getItem('user');
         if (stored && stored !== 'undefined') {
           setUser(JSON.parse(stored));
+        } else {
+          setUser(null);
         }
+      } catch (err) {
+        console.error('Error parsing user:', err);
+        setUser(null);
       }
-    } catch (err) {
-      console.error('Failed to parse user from localStorage:', err);
-      setUser(null); // fallback
     }
   }, [reduxUser]);
 
   const handleLogout = () => {
     dispatch(logout());
     setDropdownOpen(false);
-    setUser(null); // clear local state too
+    setUser(null);
   };
 
   return (
@@ -43,19 +58,24 @@ const Header = () => {
       <nav className={styles.nav}>
         <div className={styles.div}>
           <Link to="/men">Men</Link>
+          <Link to="/careers">Women</Link>
+          <Link to="/policies">Kids</Link>
           <Link to="/story">Story</Link>
           <Link to="/careers">Careers</Link>
           <Link to="/policies">Store Policies</Link>
+          
         </div>
 
         {user ? (
-          <div className={styles.dropdownWrapper}>
-            <div
+          <div className={styles.dropdownWrapper} ref={dropdownRef}>
+            <button
               className={styles.dropdownToggle}
               onClick={() => setDropdownOpen((prev) => !prev)}
+              aria-haspopup="true"
+              aria-expanded={dropdownOpen}
             >
               {user?.name || 'User'} ▼
-            </div>
+            </button>
 
             {dropdownOpen && (
               <div className={styles.dropdownMenu}>
