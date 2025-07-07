@@ -13,15 +13,27 @@ import {
 const API_URL = 'http://localhost:3001/api';
 
 // Login Action
+// Login Action
 export const login = (email, password) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
+
   try {
     const res = await axios.post(`${API_URL}/auth/login`, { email, password });
+    const user = res.data.user;
 
-    localStorage.setItem('user', JSON.stringify(res.data.user));
+    // ❌ If the user is an admin, block the login on this page
+    if (user.isAdmin) {
+      return dispatch({
+        type: LOGIN_FAILURE,
+        payload: 'Admins cannot log in here. Use the admin portal.',
+      });
+    }
+
+    // ✅ Save user info if not admin
+    localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('token', res.data.token);
 
-    dispatch({ type: LOGIN_SUCCESS, payload: res.data.user });
+    dispatch({ type: LOGIN_SUCCESS, payload: user });
   } catch (err) {
     dispatch({
       type: LOGIN_FAILURE,
@@ -29,6 +41,7 @@ export const login = (email, password) => async (dispatch) => {
     });
   }
 };
+
 
 // Register Action
 export const register = (userData) => async (dispatch) => {

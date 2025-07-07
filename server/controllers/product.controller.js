@@ -65,3 +65,25 @@ exports.deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// controllers/product.controller.js
+exports.createSimpleProduct = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+
+    if (!name || !imagePath) {
+      return res.status(400).json({ message: 'Name and image are required.' });
+    }
+
+    const product = await Product.create({
+      name,
+      mainImage: imagePath,
+    });
+
+    res.status(201).json(product);
+  } catch (err) {
+    console.error('Create Simple Product Error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

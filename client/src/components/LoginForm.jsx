@@ -11,7 +11,6 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // ✅ Make sure you're reading from "state.auth"
   const { user, error, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -27,7 +26,7 @@ const LoginForm = () => {
 
   return (
     <form className={styles.form} onSubmit={handleLogin}>
-      <h2>Login</h2>
+      <h2>User Login</h2>
 
       <input
         type="email"
@@ -53,6 +52,10 @@ const LoginForm = () => {
 
       <p className={styles.registerLink}>
         Don’t have an account? <Link to="/register">Register</Link>
+      </p>
+
+      <p className={styles.adminLink}>
+        Are you an admin? <Link to="/admin/login">Login here</Link>
       </p>
     </form>
   );

@@ -1,9 +1,9 @@
-// routes/product.routes.js
 const express = require('express');
 const router = express.Router();
 
 const {
   createProduct,
+  createSimpleProduct, // ✅ NEW
   getAllProducts,
   getProductById,
   updateProduct,
@@ -11,6 +11,7 @@ const {
 } = require('../controllers/product.controller');
 
 const { protect, adminOnly } = require('../middleware/auth.middleware');
+const upload = require('../middleware/upload'); // ✅ NEW: your multer middleware
 
 // Public routes
 router.get('/', getAllProducts);
@@ -18,6 +19,7 @@ router.get('/:id', getProductById);
 
 // Admin-only routes
 router.post('/', protect, adminOnly, createProduct);
+router.post('/upload-home-product', protect, adminOnly, upload.single('image'), createSimpleProduct); // ✅ NEW
 router.put('/:id', protect, adminOnly, updateProduct);
 router.delete('/:id', protect, adminOnly, deleteProduct);
 

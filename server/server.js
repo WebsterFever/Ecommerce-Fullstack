@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const sequelize = require('./config/database');
+const path = require('path');
 
 // Import route files
 const authRoutes = require('./routes/auth.routes');
@@ -31,6 +32,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes); // ✅ For managing carts
 app.use('/api/cart-items', cartItemRoutes); // ✅ For managing cart items
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Start server and connect to DB
 const PORT = process.env.PORT || 3001;

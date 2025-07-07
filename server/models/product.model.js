@@ -16,12 +16,12 @@ const Product = sequelize.define('Product', {
   sku: {
     type: DataTypes.STRING,
     unique: true,
-    allowNull: false,
+    allowNull: true,
   },
 
   price: {
     type: DataTypes.FLOAT,
-    allowNull: false,
+    allowNull: true,
   },
 
   brand: {

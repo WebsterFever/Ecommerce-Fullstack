@@ -10,10 +10,11 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const [user, setUser] = useState(null);
+  const [admin, setAdmin] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); // ✅ Used to detect outside clicks
+  const dropdownRef = useRef(null);
 
-  // ✅ Close dropdown when clicking outside
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -24,29 +25,47 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Sync user from Redux or localStorage
+  // Load user and admin from localStorage
   useEffect(() => {
-    if (reduxUser) {
-      setUser(reduxUser);
-    } else {
-      try {
-        const stored = localStorage.getItem('user');
-        if (stored && stored !== 'undefined') {
-          setUser(JSON.parse(stored));
-        } else {
-          setUser(null);
-        }
-      } catch (err) {
-        console.error('Error parsing user:', err);
+    try {
+      const storedUser = localStorage.getItem('user');
+      const storedAdmin = localStorage.getItem('admin');
+
+      if (reduxUser) {
+        setUser(reduxUser);
+      } else if (storedUser && storedUser !== 'undefined') {
+        setUser(JSON.parse(storedUser));
+      } else {
         setUser(null);
       }
+
+      if (storedAdmin && storedAdmin !== 'undefined') {
+        setAdmin(JSON.parse(storedAdmin));
+      } else {
+        setAdmin(null);
+      }
+    } catch (err) {
+      console.error('Error parsing user/admin:', err);
+      setUser(null);
+      setAdmin(null);
     }
   }, [reduxUser]);
 
   const handleLogout = () => {
-    dispatch(logout());
+    if (user) {
+      dispatch(logout());
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      setUser(null);
+    }
+
+    if (admin) {
+      localStorage.removeItem('admin');
+      localStorage.removeItem('adminToken');
+      setAdmin(null);
+    }
+
     setDropdownOpen(false);
-    setUser(null);
   };
 
   return (
@@ -58,15 +77,15 @@ const Header = () => {
       <nav className={styles.nav}>
         <div className={styles.div}>
           <Link to="/men">Men</Link>
-          <Link to="/careers">Women</Link>
-          <Link to="/policies">Kids</Link>
+          <Link to="/women">Women</Link>
+          <Link to="/kids">Kids</Link>
           <Link to="/story">Story</Link>
           <Link to="/careers">Careers</Link>
           <Link to="/policies">Store Policies</Link>
-          
         </div>
 
-        {user ? (
+        {/* Show user dropdown if logged in as user */}
+        {user && (
           <div className={styles.dropdownWrapper} ref={dropdownRef}>
             <button
               className={styles.dropdownToggle}
@@ -89,7 +108,10 @@ const Header = () => {
               </div>
             )}
           </div>
-        ) : (
+        )}
+
+        {/* Show Login button only if no user is logged in (ignore admin presence) */}
+        {!user && (
           <div className={styles.login}>
             <Link to="/login">Log In</Link>
           </div>
