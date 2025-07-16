@@ -6,17 +6,29 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-h1 {
-  font-size: 2.75rem;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-  color: #111;
+.heroSection {
+  background-image: url('../assets/back.avif'); /* ✅ change if needed */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 100px 20px;
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  border-radius: 16px;
+  margin: 2rem auto;
+  max-width: 1200px;
 }
 
-p {
-  font-size: 1.25rem;
-  color: #555;
-  margin-bottom: 2.5rem;
+.heroSection h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.heroSection p {
+  font-size: 1.4rem;
+  margin-bottom: 0;
 }
 
 .productGrid {

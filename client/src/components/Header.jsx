@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,7 +15,7 @@ const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown on outside click
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -25,25 +26,48 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Load user and admin from localStorage
+  // Load user/admin from localStorage
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem('user');
       const storedAdmin = localStorage.getItem('admin');
 
-      if (reduxUser) {
+      if (reduxUser && typeof reduxUser === 'object' && reduxUser.name) {
         setUser(reduxUser);
       } else if (storedUser && storedUser !== 'undefined') {
-        setUser(JSON.parse(storedUser));
+        try {
+          const parsed = JSON.parse(storedUser);
+          if (parsed && typeof parsed === 'object' && parsed.name) {
+            setUser(parsed);
+          } else {
+            localStorage.removeItem('user');
+            setUser(null);
+          }
+        } catch {
+          localStorage.removeItem('user');
+          setUser(null);
+        }
       } else {
         setUser(null);
       }
 
       if (storedAdmin && storedAdmin !== 'undefined') {
-        setAdmin(JSON.parse(storedAdmin));
+        try {
+          const parsedAdmin = JSON.parse(storedAdmin);
+          if (parsedAdmin && typeof parsedAdmin === 'object' && parsedAdmin.name) {
+            setAdmin(parsedAdmin);
+          } else {
+            localStorage.removeItem('admin');
+            setAdmin(null);
+          }
+        } catch {
+          localStorage.removeItem('admin');
+          setAdmin(null);
+        }
       } else {
         setAdmin(null);
       }
+
     } catch (err) {
       console.error('Error parsing user/admin:', err);
       setUser(null);
@@ -84,8 +108,8 @@ const Header = () => {
           <Link to="/policies">Store Policies</Link>
         </div>
 
-        {/* Show user dropdown if logged in as user */}
-        {user && (
+        {/* ✅ User Dropdown OR Login Button */}
+        {user?.name ? (
           <div className={styles.dropdownWrapper} ref={dropdownRef}>
             <button
               className={styles.dropdownToggle}
@@ -93,7 +117,7 @@ const Header = () => {
               aria-haspopup="true"
               aria-expanded={dropdownOpen}
             >
-              {user?.name || 'User'} ▼
+              {user.name} ▼
             </button>
 
             {dropdownOpen && (
@@ -108,10 +132,7 @@ const Header = () => {
               </div>
             )}
           </div>
-        )}
-
-        {/* Show Login button only if no user is logged in (ignore admin presence) */}
-        {!user && (
+        ) : (
           <div className={styles.login}>
             <Link to="/login">Log In</Link>
           </div>

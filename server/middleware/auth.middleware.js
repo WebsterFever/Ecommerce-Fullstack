@@ -40,5 +40,5 @@ const adminOnly = (req, res, next) => {
 
 module.exports = {
   protect,
-  adminOnly, // ✅ Changed from isAdmin to adminOnly for consistency
+  adminOnly, 
 };

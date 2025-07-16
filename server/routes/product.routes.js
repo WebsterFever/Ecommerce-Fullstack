@@ -3,7 +3,6 @@ const router = express.Router();
 
 const {
   createProduct,
-  createSimpleProduct, // ✅ NEW
   getAllProducts,
   getProductById,
   updateProduct,
@@ -19,7 +18,7 @@ router.get('/:id', getProductById);
 
 // Admin-only routes
 router.post('/', protect, adminOnly, createProduct);
-router.post('/upload-home-product', protect, adminOnly, upload.single('image'), createSimpleProduct); // ✅ NEW
+router.post('/upload-home-product', protect, adminOnly, upload.single('image'), createProduct); // ✅ NEW
 router.put('/:id', protect, adminOnly, updateProduct);
 router.delete('/:id', protect, adminOnly, deleteProduct);
 

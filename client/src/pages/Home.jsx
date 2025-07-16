@@ -1,5 +1,3 @@
-// src/pages/Home.jsx
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
@@ -25,10 +23,12 @@ const Home = () => {
     <div>
       <Header />
 
-      <div className={styles.container}>
+      <div className={styles.heroSection}>
         <h1>Welcome to The Jean Maker</h1>
         <p>Your perfect pair of jeans is just a click away.</p>
+      </div>
 
+      <div className={styles.container}>
         {products.length === 0 ? (
           <p>No products found.</p>
         ) : (

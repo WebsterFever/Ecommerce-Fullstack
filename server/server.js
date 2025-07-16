@@ -9,8 +9,8 @@ const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 const adminRoutes = require('./routes/admin.routes');
 const productRoutes = require('./routes/product.routes');
-const cartRoutes = require('./routes/cart.routes'); // ✅ NEW
-const cartItemRoutes = require('./routes/cartItem.routes'); // ✅ NEW
+const cartRoutes = require('./routes/cart.routes'); 
+const cartItemRoutes = require('./routes/cartItem.routes'); 
 
 dotenv.config();
 
@@ -30,12 +30,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/products', productRoutes);
-app.use('/api/cart', cartRoutes); // ✅ For managing carts
-app.use('/api/cart-items', cartItemRoutes); // ✅ For managing cart items
+app.use('/api/cart', cartRoutes); 
+app.use('/api/cart-items', cartItemRoutes); 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Start server and connect to DB
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 sequelize.authenticate()
   .then(() => {
