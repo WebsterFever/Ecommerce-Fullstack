@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from '../styles/AdminLogin.module.css';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -19,7 +20,6 @@ const AdminLogin = () => {
         password,
       });
 
-      // ✅ Correct check using `isAdmin` instead of `role`
       if (!res.data.user.isAdmin) {
         return setError('Access denied. Not an admin account.');
       }
@@ -27,8 +27,6 @@ const AdminLogin = () => {
       localStorage.setItem('adminToken', res.data.token);
       localStorage.setItem('admin', JSON.stringify(res.data.user));
 
-
-      // ✅ Redirect to dashboard
       navigate('/admin/dashboard');
     } catch (err) {
       console.error(err);
@@ -37,14 +35,15 @@ const AdminLogin = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: '2rem auto' }}>
-      <h2>Admin Login</h2>
+    <form onSubmit={handleSubmit} className={styles.formContainer}>
+      <h2 className={styles.heading}>Admin Login</h2>
       <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
+        className={styles.input}
       />
       <input
         type="password"
@@ -52,9 +51,10 @@ const AdminLogin = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
+        className={styles.input}
       />
-      <button type="submit">Login</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <button type="submit" className={styles.button}>Login</button>
+      {error && <p className={styles.error}>{error}</p>}
     </form>
   );
 };

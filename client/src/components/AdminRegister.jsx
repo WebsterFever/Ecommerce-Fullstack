@@ -1,13 +1,15 @@
+// src/pages/AdminRegister.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from '../styles/AdminRegister.module.css';
 
 const AdminRegister = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    secret: '', // 🔐 Include secret for admin creation
+    secret: '',
   });
 
   const [error, setError] = useState('');
@@ -24,7 +26,7 @@ const AdminRegister = () => {
 
     try {
       await axios.post('http://localhost:3001/api/admin/create-admin', formData);
-      navigate('/admin/login'); // ✅ Redirect after successful registration
+      navigate('/admin/login');
     } catch (err) {
       console.error(err);
       setError('❌ Registration failed. Please check the form or secret.');
@@ -32,8 +34,8 @@ const AdminRegister = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '2rem auto' }}>
-      <h2>Admin Register</h2>
+    <div className={styles.container}>
+      <h2 className={styles.heading}>Admin Register</h2>
       <form onSubmit={handleSubmit}>
         <input
           name="name"
@@ -41,6 +43,7 @@ const AdminRegister = () => {
           value={formData.name}
           onChange={handleChange}
           required
+          className={styles.input}
         />
         <input
           name="email"
@@ -49,6 +52,7 @@ const AdminRegister = () => {
           value={formData.email}
           onChange={handleChange}
           required
+          className={styles.input}
         />
         <input
           name="password"
@@ -57,6 +61,7 @@ const AdminRegister = () => {
           value={formData.password}
           onChange={handleChange}
           required
+          className={styles.input}
         />
         <input
           name="secret"
@@ -64,9 +69,10 @@ const AdminRegister = () => {
           value={formData.secret}
           onChange={handleChange}
           required
+          className={styles.input}
         />
-        <button type="submit">Register</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type="submit" className={styles.button}>Register</button>
+        {error && <p className={styles.error}>{error}</p>}
       </form>
     </div>
   );

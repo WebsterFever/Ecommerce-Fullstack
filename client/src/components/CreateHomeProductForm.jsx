@@ -4,6 +4,7 @@ import styles from '../styles/CreateHomeProductForm.module.css';
 
 const CreateHomeProductForm = () => {
   const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [message, setMessage] = useState('');
@@ -32,10 +33,11 @@ const CreateHomeProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !image) return setMessage('Please provide both product name and image.');
+    if (!name || !price || !image) return setMessage('Please provide product name, price, and image.');
 
     const formData = new FormData();
     formData.append('name', name);
+    formData.append('price', price);
     formData.append('image', image);
 
     try {
@@ -48,9 +50,10 @@ const CreateHomeProductForm = () => {
 
       setMessage('✅ Product created successfully!');
       setName('');
+      setPrice('');
       setImage(null);
       setPreview(null);
-      fetchProducts(); // Refresh product list
+      fetchProducts();
     } catch (err) {
       console.error(err);
       setMessage(err.response?.data?.message || '❌ Error creating product');
@@ -75,20 +78,40 @@ const CreateHomeProductForm = () => {
     <div className={styles.container}>
       <h2>Create Home Page Product</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <input type="text" placeholder="Product Name" value={name} onChange={(e) => setName(e.target.value)} required />
+        <input
+          type="text"
+          placeholder="Product Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          step="0.01"
+          placeholder="Price (e.g. 49.99)"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          required
+        />
         <input type="file" accept="image/*" onChange={handleImageChange} required />
         {preview && <img src={preview} alt="Preview" className={styles.preview} />}
         <button type="submit">Create Product</button>
         {message && <p className={styles.message}>{message}</p>}
       </form>
 
-      {/* Product list with delete buttons (only for admin) */}
       <div className={styles.adminProductGrid}>
         {products.map((product) => (
           <div key={product.id} className={styles.productCard}>
-            <img src={`http://localhost:3001${product.mainImage}`} alt={product.name} className={styles.productImage} />
+            <img
+              src={`http://localhost:3001${product.mainImage}`}
+              alt={product.name}
+              className={styles.productImage}
+            />
             <h3>{product.name}</h3>
-            <button onClick={() => handleDelete(product.id)} className={styles.deleteBtn}>🗑 Delete</button>
+            <p>${product.price?.toFixed(2)}</p>
+            <button onClick={() => handleDelete(product.id)} className={styles.deleteBtn}>
+              🗑 Delete
+            </button>
           </div>
         ))}
       </div>

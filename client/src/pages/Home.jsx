@@ -35,16 +35,23 @@ const Home = () => {
           <div className={styles.productGrid}>
             {products.map((product) => (
               <div key={product.id} className={styles.productCard}>
-                {product.mainImage ? (
-                  <img
-                    src={`http://localhost:3001${product.mainImage}`}
-                    alt={product.name}
-                    className={styles.productImage}
-                  />
-                ) : (
-                  <div className={styles.placeholder}>No Image</div>
-                )}
-                <h3>{product.name}</h3>
+                <div className={styles.imageWrapper}>
+                  {product.mainImage ? (
+                    <img
+                      src={`http://localhost:3001${product.mainImage}`}
+                      alt={product.name}
+                      className={styles.productImage}
+                    />
+                  ) : (
+                    <div className={styles.placeholder}>No Image</div>
+                  )}
+                  {product.price && (
+                    <span className={styles.overlayPrice}>
+                      ${parseFloat(product.price).toFixed(2)}
+                    </span>
+                  )}
+                </div>
+                <h3 className={styles.productName}>{product.name}</h3>
               </div>
             ))}
           </div>
