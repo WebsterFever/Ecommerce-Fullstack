@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import styles from '../styles/Home.module.css';
 
 const Home = () => {
@@ -36,6 +37,7 @@ const Home = () => {
             {products.map((product) => (
               <div key={product.id} className={styles.productCard}>
                 <div className={styles.imageWrapper}>
+                  <span className={styles.ribbon}>Free Shipping</span>
                   {product.mainImage ? (
                     <img
                       src={`http://localhost:3001${product.mainImage}`}
@@ -45,18 +47,18 @@ const Home = () => {
                   ) : (
                     <div className={styles.placeholder}>No Image</div>
                   )}
-                  {product.price && (
-                    <span className={styles.overlayPrice}>
-                      ${parseFloat(product.price).toFixed(2)}
-                    </span>
-                  )}
                 </div>
-                <h3 className={styles.productName}>{product.name}</h3>
+                <p className={styles.productName}>{product.name}</p>
+                <p className={styles.productPrice}>
+                  C${parseFloat(product.price).toFixed(2)}
+                </p>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      <Footer />
     </div>
   );
 };
